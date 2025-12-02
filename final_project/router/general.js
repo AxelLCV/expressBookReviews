@@ -26,46 +26,57 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  return res.send(JSON.stringify(books));
+  new Promise((resolve, reject) => {
+    resolve(books);
+  })
+    .then(data => {
+      return res.send(JSON.stringify(data));
+    })
+    .catch(error => {
+      return res.status(500).json({ message: "Error during retrieve of books information" });
+    });
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
-  var isbn = req.params.isbn;
-  if (isbn)
-  {
-    return res.send(JSON.stringify(books[isbn]));
-  }
-  else
-  {
-    res.send("Unable to find book!");
-  }
+  new Promise((resolve, reject) => {
+    var isbn = req.params.isbn;
+    resolve(books[isbn]);
+  })
+    .then(data => {
+      return res.send(JSON.stringify(data));
+    })
+    .catch(error => {
+      return res.status(500).json({ message: "Unable to find book!" });
+    });
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  var author = req.params.author;
-  if (author)
-  {
-    return res.send(JSON.stringify(Object.values(books).filter(book => book.author==author)));
-  }
-  else
-  {
-    res.send("Unable to find books!");
-  }
+  new Promise((resolve, reject) => {
+    var author = req.params.author;
+    resolve(Object.values(books).filter(book => book.author==author));
+  })
+    .then(data => {
+      return res.send(JSON.stringify(data));
+    })
+    .catch(error => {
+      return res.status(500).json({ message: "Unable to find books!" });
+    });
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  var title = req.params.title;
-  if (title)
-  {
-    return res.send(JSON.stringify(Object.values(books).filter(book => book.title==title)));
-  }
-  else
-  {
-    res.send("Unable to find books!");
-  }
+  new Promise((resolve, reject) => {
+    var title = req.params.title;
+    resolve(Object.values(books).filter(book => book.title==title));
+  })
+    .then(data => {
+      return res.send(JSON.stringify(data));
+    })
+    .catch(error => {
+      return res.status(500).json({ message: "Unable to find books!" });
+    });
 });
 
 //  Get book review
